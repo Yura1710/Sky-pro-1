@@ -27,31 +27,41 @@ class TestSlowCalculator:
             "https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html"
         )
         print("Страница загружена")
-        delay_input = self.driver.find_element(
-            By.CSS_SELECTOR, "#delay"
-        )
+
+        delay_input = self.driver.find_element(By.CSS_SELECTOR, "#delay")
         delay_input.clear()
         delay_input.send_keys("45")
         print("Задержка установлена на 45 секунд")
+
         button_7 = self.driver.find_element(By.XPATH, "//span[text()='7']")
         button_7.click()
         print("Нажата кнопка 7")
+
         button_plus = self.driver.find_element(By.XPATH, "//span[text()='+']")
         button_plus.click()
         print("Нажата кнопка +")
+
         button_8 = self.driver.find_element(By.XPATH, "//span[text()='8']")
         button_8.click()
         print("Нажата кнопка 8")
-        button_equals = self.driver.find_element(By.XPATH, "//span[text()='=']")
+
+        button_equals = self.driver.find_element(
+            By.XPATH, "//span[text()='=']"
+        )
         button_equals.click()
         print("Нажата кнопка =, ожидаем результат...")
+
         result_locator = (By.CSS_SELECTOR, ".screen")
         expected_result = "15"
-        WebDriverWait(self.driver, 50).until(
+
+        wait = WebDriverWait(self.driver, 50)
+        wait.until(
             EC.text_to_be_present_in_element(result_locator, expected_result)
         )
         print("Результат появился!")
+
         result_text = self.driver.find_element(*result_locator).text
-        assert result_text == expected_result, \
-            f"Ожидалось {expected_result}, получено {result_text}"
+        assert (
+            result_text == expected_result
+        ), f"Ожидалось {expected_result}, получено {result_text}"
         print(f"✅ Результат верный: {result_text}")

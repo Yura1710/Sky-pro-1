@@ -12,11 +12,13 @@ class TestForm:
     def setup_method(self):
         """Настройка браузера перед каждым тестом"""
         driver_path = os.path.join(os.getcwd(), "msedgedriver.exe")
+
         if not os.path.exists(driver_path):
             raise FileNotFoundError(
                 f"Драйвер не найден по пути: {driver_path}\n"
                 "Скачай его с https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/"
             )
+
         service = Service(driver_path)
         self.driver = webdriver.Edge(service=service)
         self.driver.maximize_window()
@@ -33,6 +35,7 @@ class TestForm:
             "https://bonigarcia.dev/selenium-webdriver-java/data-types.html"
         )
         self.wait.until(EC.presence_of_element_located((By.TAG_NAME, "form")))
+
         fields = {
             "first-name": "Иван",
             "last-name": "Петров",
@@ -44,24 +47,30 @@ class TestForm:
             "job-position": "QA",
             "company": "SkyPro",
         }
+
         for field_id, value in fields.items():
             element = self.driver.find_element(By.NAME, field_id)
             element.clear()
             element.send_keys(value)
+
         submit_button = self.driver.find_element(
             By.CSS_SELECTOR, "button[type='submit']"
         )
         submit_button.click()
+
         self.wait.until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, ".alert-success, .alert-danger")
             )
         )
+
         zip_code_field = self.driver.find_element(By.ID, "zip-code")
         zip_code_class = zip_code_field.get_attribute("class")
-        assert "alert-danger" in zip_code_class, \
-            f"Zip code должен быть красным, но класс: {zip_code_class}"
+        assert (
+            "alert-danger" in zip_code_class
+        ), f"Zip code должен быть красным, но класс: {zip_code_class}"
         print("✅ Поле Zip code красное (верно)")
+
         fields_to_check = [
             "first-name",
             "last-name",
@@ -73,11 +82,13 @@ class TestForm:
             "job-position",
             "company",
         ]
+
         for field_id in fields_to_check:
             field = self.driver.find_element(By.ID, field_id)
             field_class = field.get_attribute("class")
             assert (
                 "alert-success" in field_class
-            ), f"Поле {field_id} должно быть зелёным"
+            ), f"Поле {field_id} должно быть зелёным, но класс: {field_class}"
             print(f"✅ Поле {field_id} зелёное")
+
         print("🎉 Все проверки пройдены успешно!")
