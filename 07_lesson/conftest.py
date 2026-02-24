@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 @pytest.fixture
 def browser():
-    
+
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service)
     driver.maximize_window()
