@@ -1,3 +1,4 @@
+$test_projects_fixed = @"
 # -*- coding: utf-8 -*-
 
 class TestProjectsPositive:
@@ -65,3 +66,5 @@ class TestProjectsNegative:
     def test_delete_project_invalid_id(self, projects_api):
         result = projects_api.delete_project("invalid-id")
         assert result.get("status", 200) == 404 or "error" in result
+"@
+Set-Content -Path test_projects.py -Value $test_projects_fixed -Encoding UTF8
